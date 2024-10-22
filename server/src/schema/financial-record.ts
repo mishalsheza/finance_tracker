@@ -19,7 +19,7 @@ const financialRecordSchema = new mongoose.Schema<FinancialRecord>({
 });
 
 const FinancialRecordModel = mongoose.model<FinancialRecord>(
-  "FinancialRecord",
+  "FinancialRecord",  
   financialRecordSchema
 );
 

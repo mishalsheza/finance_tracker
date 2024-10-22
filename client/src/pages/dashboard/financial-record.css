@@ -67,7 +67,7 @@
   
   .table-container {
     margin: 20px;
-    overflow-y: auto; /* Enables horizontal scrolling if the table is too wide */
+    overflow-x: auto; /* Enables horizontal scrolling if the table is too wide */
   }
   
   .table {
@@ -97,4 +97,3 @@
   .table tbody tr:hover {
     background-color: #e8f4f8; /* Light blue hover effect for rows */
   }
-  

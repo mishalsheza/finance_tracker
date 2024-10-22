@@ -3,11 +3,11 @@ import {
   FinancialRecord,
   useFinancialRecords,
 } from "../../contexts/financial-record-context";
-import { useTable, Column, CellProps, Row } from "react-table";
+import { useTable, Column, CellProps } from "react-table";
 
 interface EditableCellProps extends CellProps<FinancialRecord> {
   updateRecord: (rowIndex: number, columnId: string, value: any) => void;
-  editable: boolean;
+  editable: boolean; // Explicitly adding the editable prop
 }
 
 const EditableCell: React.FC<EditableCellProps> = ({
@@ -51,7 +51,7 @@ export const FinancialRecordList = () => {
   const { records, updateRecord, deleteRecord } = useFinancialRecords();
 
   const updateCellRecord = (rowIndex: number, columnId: string, value: any) => {
-    const id = records[rowIndex]?._id;
+    const id = records[rowIndex]._id;
     updateRecord(id ?? "", { ...records[rowIndex], [columnId]: value });
   };
 
@@ -92,7 +92,7 @@ export const FinancialRecordList = () => {
       },
       {
         Header: "Payment Method",
-        accessor: "paymentMethod",
+        accessor: "paymentMethod", // Fixed accessor
         Cell: (props) => (
           <EditableCell
             {...props}
@@ -133,14 +133,17 @@ export const FinancialRecordList = () => {
       columns,
       data: records,
     });
+
   return (
     <div className="table-container">
       <table {...getTableProps()} className="table">
         <thead>
           {headerGroups.map((hg) => (
-            <tr {...hg.getHeaderGroupProps()}>
+            <tr {...hg.getHeaderGroupProps()} key={hg.id}>
               {hg.headers.map((column) => (
-                <th {...column.getHeaderProps()}> {column.render("Header")}</th>
+                <th {...column.getHeaderProps()} key={column.id}>
+                  {column.render("Header")}
+                </th>
               ))}
             </tr>
           ))}
@@ -149,9 +152,11 @@ export const FinancialRecordList = () => {
           {rows.map((row, idx) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
+              <tr {...row.getRowProps()} key={row.id}>
                 {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()}> {cell.render("Cell")} </td>
+                  <td {...cell.getCellProps()} key={cell.column.id}>
+                    {cell.render("Cell")}
+                  </td>
                 ))}
               </tr>
             );
